@@ -5,6 +5,7 @@ import com.Licenta.QuizSurprise.Repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PersistenceContext
     private EntityManager em;
@@ -39,4 +43,13 @@ public class UserService {
     public User updateUser(User user) {return userRepository.save(user);}
 
     public Optional<User> findUserById(int id) {return userRepository.findById(id);}
+
+    public User registerUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
