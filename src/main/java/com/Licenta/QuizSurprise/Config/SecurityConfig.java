@@ -27,18 +27,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(request -> request
+//                        .requestMatchers("/auth/**").permitAll()
+//                        .anyRequest().authenticated())
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
 
         // ALLOW ALL REQUESTS WITHOUT AUTHENTIFICATION
-//        http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
-//                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
-//        return http.build();
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
+                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
+        return http.build();
     }
 
     @Bean

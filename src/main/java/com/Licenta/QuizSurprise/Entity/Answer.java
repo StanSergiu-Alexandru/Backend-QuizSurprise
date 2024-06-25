@@ -1,5 +1,7 @@
 package com.Licenta.QuizSurprise.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +23,6 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @JsonBackReference
     private Question question;
 }

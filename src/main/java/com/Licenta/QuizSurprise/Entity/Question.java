@@ -1,5 +1,6 @@
 package com.Licenta.QuizSurprise.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,6 @@ public class Question {
     private String subjectType;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Answer> answers;
-
 }
