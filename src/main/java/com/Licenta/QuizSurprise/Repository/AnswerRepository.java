@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Integer> {
     List<Answer> findAllByQuestionIdAndIsCorrect(Integer questionId, Boolean isCorrect);
-    Answer findByQuestionIdAndAnswer(Integer questionId, String answer);
 }

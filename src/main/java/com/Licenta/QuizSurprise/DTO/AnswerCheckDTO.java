@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 public class AnswerCheckDTO {
-    private List<String> answers;
+    private List<Integer> answers;
 }

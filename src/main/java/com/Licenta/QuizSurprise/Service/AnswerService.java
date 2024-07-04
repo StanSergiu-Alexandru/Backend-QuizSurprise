@@ -13,21 +13,20 @@ public class AnswerService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    public boolean checkAnswers(Integer questionId, List<String> answerTexts) {
+    public boolean checkAnswers(Integer questionId, List<Integer> answerIds) {
         List<Answer> correctAnswers = answerRepository.findAllByQuestionIdAndIsCorrect(questionId, true);
 
-        // Verific dacă lista de raspunsuri furnizată contine toate raspunsurile corecte
+        // Verificăm dacă lista de răspunsuri furnizată conține toate răspunsurile corecte
         for (Answer correctAnswer : correctAnswers) {
-            if (!answerTexts.contains(correctAnswer.getAnswer())) {
+            if (!answerIds.contains(correctAnswer.getId())) {
                 return false;
             }
         }
 
-        // Verific ddaca fiecare raspuns din lista furnizata este corect.
-        // Caut in DB fiecare raspuns => daca nu exista sau daca e 'false' => return false
-        for (String answerText : answerTexts) {
-            Answer answer = answerRepository.findByQuestionIdAndAnswer(questionId, answerText);
-            if (answer == null || !answer.getIsCorrect()) {
+        // Verificăm dacă lista furnizată conține doar răspunsuri corecte
+        for (Integer answerId : answerIds) {
+            Answer answer = answerRepository.findById(answerId).orElse(null);
+            if (answer == null || !answer.getIsCorrect() || !answer.getQuestion().getId().equals(questionId)) {
                 return false;
             }
         }
