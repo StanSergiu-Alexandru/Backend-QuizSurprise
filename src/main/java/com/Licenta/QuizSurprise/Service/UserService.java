@@ -25,6 +25,8 @@ public class UserService {
 
     public List<User> getAllUsers() {return userRepository.findAll();}
 
+    public User getUserByUsername(String username) {return userRepository.findByUsername(username);}
+
     public User getUserById(int id) {return userRepository.findById(id).orElse(null);}
 
     public void createUser(User user) {userRepository.save(user);}
@@ -45,6 +47,9 @@ public class UserService {
     public Optional<User> findUserById(int id) {return userRepository.findById(id);}
 
     public User registerUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("Username already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

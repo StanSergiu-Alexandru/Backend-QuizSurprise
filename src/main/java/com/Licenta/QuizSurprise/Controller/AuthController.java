@@ -7,11 +7,12 @@ import com.Licenta.QuizSurprise.Service.AuthService;
 import com.Licenta.QuizSurprise.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,8 +37,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
+    public ResponseEntity<Map<String, String>> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
         String jwt = authenticationService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        return ResponseEntity.ok(jwt);
+        User user = userService.getUserByUsername(loginRequest.getUsername());
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", jwt);
+        response.put("first_name", user.getFirstName());
+        return ResponseEntity.ok(response);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
