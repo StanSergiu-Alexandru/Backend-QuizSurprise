@@ -1,5 +1,6 @@
 package com.Licenta.QuizSurprise.DTO;
 
+import com.Licenta.QuizSurprise.Entity.UserPoints;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +13,5 @@ public class UserDTO {
     private String username;
     private String password;
     private Integer userGroup;
+    private UserPoints userPoints;
 }

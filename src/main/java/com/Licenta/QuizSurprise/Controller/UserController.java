@@ -23,6 +23,9 @@ public class UserController {
     @GetMapping("/getUsers")
     public List<User> getAllUsers() {return userService.getAllUsers();}
 
+    @GetMapping("/getUsersByPoints")
+    public List<User> getAllUsersOrderedByPoints() {return userService.getAllUsersOrderByPoints();}
+
     @PostMapping("/createUser")
     public void createUser(@RequestBody User user) {userService.createUser(user);}
 
