@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/quiz")
 public class QuizController {
@@ -29,9 +31,9 @@ public class QuizController {
         return ResponseEntity.ok(question);
     }
 
-    @PostMapping("/check-answers/{questionId}")
-    public ResponseEntity<Boolean> checkAnswers(@PathVariable Integer questionId, @RequestBody AnswerCheckDTO answerCheckDTO) {
-        boolean areCorrect = answerService.checkAnswers(questionId, answerCheckDTO.getAnswers());
+    @PostMapping("/check-answers/{questionId}/{userId}")
+    public ResponseEntity<Boolean> checkAnswers(@PathVariable Integer questionId, @PathVariable Integer userId, @RequestBody AnswerCheckDTO answerCheckDTO) {
+        boolean areCorrect = answerService.checkAnswers(userId, questionId, answerCheckDTO.getAnswers());
         return ResponseEntity.ok(areCorrect);
     }
 
@@ -40,4 +42,5 @@ public class QuizController {
         Question question = questionService.addQuestion(questionDTO);
         return ResponseEntity.ok(question);
     }
+
 }

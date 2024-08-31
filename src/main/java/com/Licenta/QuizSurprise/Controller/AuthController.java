@@ -43,19 +43,26 @@ public class AuthController {
         user.setPassword(userDTO.getPassword());
         user.setUserGroup(userDTO.getUserGroup());
         user.setUserPoints(userPoints);
+        user.setLastAccessed(null);
         User registeredUser = userService.registerUser(user);
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<HashMap<String,Object>> authenticateUser(@Valid @RequestBody LoginDTO loginRequest) {
-        String jwt = authenticationService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
-        User user = userService.findByUsername(loginRequest.getUsername());
-        HashMap<String, Object> response = new HashMap<>();
-        response.put("token", jwt);
-        response.put("first_name", user.getFirstName());
-        response.put("last_name", user.getLastName());
-        response.put("user_id",user.getId());
-        return ResponseEntity.ok(response);
+        try {
+            String jwt = authenticationService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+            User user = userService.findByUsername(loginRequest.getUsername());
+            HashMap<String, Object> response = new HashMap<>();
+            response.put("token", jwt);
+            response.put("first_name", user.getFirstName());
+            response.put("last_name", user.getLastName());
+            response.put("user_id", user.getId());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            HashMap<String, Object> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.ok(error);
+        }
     }
 }

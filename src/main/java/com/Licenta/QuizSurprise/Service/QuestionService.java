@@ -32,6 +32,8 @@ public class QuestionService {
         return subjectQuestions.get(random.nextInt(subjectQuestions.size()));
     }
 
+
+
     public Question addQuestion(QuestionDTO questionDTO) {
         Question question = new Question();
         question.setQuestion(questionDTO.getQuestion());
